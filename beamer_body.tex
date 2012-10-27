@@ -1,0 +1,807 @@
+\input{beamer_head}
+
+% 使用 \part,\section,\subsection 等命令组织文档结构
+% 使用 \frame 命令制作幻灯片
+\setbeamertemplate{background canvas}[vertical shading][bottom=white,top=structure.fg!25]
+\begin{document}
+
+\logo{\includegraphics[height=0.08\textwidth]{logo.png}}
+\title[独立性检验的强弱分析]{\hei{独立性检验的强弱分析}}
+\author[朱建平]{报告人~~ 朱建平}
+\institute{\wuhao \fangsong{厦门大学\  经济学院统计系}}
+\date{\small \today}
+\frame{ \titlepage }
+% 定义目录页
+\AtBeginPart{
+  \frame{
+    \frametitle{\partpage}
+    \begin{multicols}{2}
+% 如果目录过长，可以打开这个选项分两栏显示
+      \tableofcontents
+% 使用这个命令自动生成目录
+    \end{multicols}
+  }  
+}
+
+% 在每个Section前都会加入的Frame
+\AtBeginSection[]
+{
+  \begin{frame}<beamer>
+    \frametitle{提纲}
+	\setcounter{tocdepth}{2}
+    \tableofcontents[currentsection,currentsubsection]
+  \end{frame}
+}
+% 在每个Subsection前都会加入的Frame
+\AtBeginSubsection[]
+{
+  \begin{frame}<beamer>
+%\begin{frame}<handout:0>
+% handout:0 表示只在手稿中出现
+    \frametitle{提纲}
+	\setcounter{tocdepth}{2}
+    \tableofcontents[currentsection,currentsubsection]
+% 显示在目录中加亮的当前章节
+  \end{frame}
+}
+
+%%===================================================================================================
+\section{引言}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{引言}
+\begin{itemize}
+ \item \color{magenta}{$r\times c$的二维列联表}
+ \vskip0.5cm
+  \quad\quad
+\begin{small}
+\color{blue}在实际中经常要了解两组或多组因素(或变量)之间的内在联系.\\
+\quad\quad 设有两组因素$A$和$B$，其中因素$A$包含$r$个水平，即$A_{1},$\\$A_{2},\ldots,A_{r}$;因素$B$包含$c$个水平，即$B_{1},B_{2},\ldots,B_{c}$.又设有受制于这两个因素的载体(或客体)的集合总体$\mathcal{N}$.我们希望通过对总体$\mathcal{N}$关于这两组因素的有关资料(或抽样资料)，来分析这两组因素的关系.\\
+
+\end{small}
+\end{itemize}
+\end{frame}
+
+
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}
+\frametitle{引言}
+\begin{small}
+\quad\quad
+一般地，设受制于某个载体总体的两个因素为$A$和$B$，其中$A$包含$r$个水平.\\
+
+\quad\quad
+这里$A_{1},A_{2},\ldots,A_{r}$；$B$包含$c$个水平，$B_{1},B_{2},\ldots,B_{c}$.对这两组因素作随机抽样调查，
+\color{magenta}得到一个$r\times c$的二维列联表，记为$\mathbf{K}=(k_{ij})_{r\times c}$.\\
+\color{blue}
+\quad\quad
+这里$k_{i.}=\sum^{c}_{j=1}k_{ij}$表示因素$A$的第$i$个水平的样本个数；\\
+$k_{.j}=\sum^{r}_{i=1}k_{ij}$表示因素$B$的第$j$个水平的样本个数；$k=k_{..}=\sum k_{ij}$表示总的样本个数.\\
+\end{small}
+\end{frame}
+
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}
+\begin{itemize}
+ \item {\color{magenta}问题的提出}
+ \vskip0.5cm
+\frametitle{引言} \quad\quad
+我们要通过这一列联表$\mathbf{K}$来分析两组因素的关联关系.通常利用独立性检验来推断因素之间是否有联系.
+{\color{blue}如果两组因素之间不独立，那么其之间的关联程度有多深，传统的独立性检验无法描述.}\\
+\quad\quad
+在此，我们对列联资料的总信息变差进行剖析，{\color{magenta}研究独立性检验$\chi^2$统计量与总信息变差之间的关系，}通过统计模拟构建独立性检验强弱性分析统计量，
+进一步明确独立性检验的内在本质.
+\end{itemize}
+
+\end{frame}
+
+%%---------------------------------------------------------------------------------------------------
+
+
+
+\section{列联资料总信息变差的量度}
+%%---------------------------------------------------------------------------------------------------
+
+%\begin{frame}\frametitle{列联资料总信息变差的量度}
+%\quad\quad
+%\begin{large}时态数据~(temporal
+%data), 泛指一切按照时间顺序排列的数据集合.
+%时态数据的具体形式可为{\color{magenta}时间序列、事件序列和事务序列}
+%三类~[5].
+%\end{large}
+%\end{frame}
+%%---------------------------------------------------------------------------------------------------
+
+
+
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+\begin{small}
+\quad\quad {\color{magenta} {\hei 1. 有关记号}}
+ \vskip0.5cm
+
+ \quad\quad
+对列联表$\mathbf{K}=(k_{ij})_{r\times c}$为一个$r\times
+c$，称元素$k_{ij}$为原始频数.将列联表$\mathbf{K}$
+转化为频率矩阵，记为$\mathbf{F}=(f_{ij})_{r\times c}$.\\
+ \quad\quad
+ 这里$f_{ij}=k_{ij}/k$是样本中属于因素$A$第$i$个水平和因素$B$第$j$个水平的百分比；
+$f_{i.}=\sum^{c}_{j=1}f_{ij}$， $f_{.j}=\sum^{r}_{i=1}f_{ij}$，\\
+ $i=1,2,\ldots,r, j=1,2,\ldots,c$.
+
+\end{small}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+
+
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+\begin{small}
+
+\quad\quad
+ 这里我们记
+    $$\mathbf{f}_{r}=(f_{1.},f_{2.},...,f_{r.})',\quad
+    \mathbf{f}_{c}=(f_{.1},f_{.2},...,f_{.c})',$$
+    $$\mathbf{D}_{r}={\mathrm{diag}}(f_{1.},...,f_{i.},...,f_{r.})={\mathrm{diag}}(\mathbf{f}_{r}),$$
+    $$\mathbf{D}_{c}={\mathrm{diag}}(f_{.1},...,f_{.j},...,f_{.c})={\mathrm{diag}}(\mathbf{f}_{c}).$$
+那么有，
+    $$\mathbf{f}_{r}=\mathbf{F}\mathbf{1}_{c},\quad\quad \mathbf{f}_{c}=\mathbf{F}'\mathbf{1}_{r},$$
+    $$\mathbf{1}'_{r}\mathbf{f}_{r}=\mathbf{1}'_{c}\mathbf{f}_{c}
+       =\mathbf{1}'_{r}\mathbf{F}\mathbf{1}_{c}=1.$$
+其中$\mathbf{1}_{r}=(1,1,...,1)'_{r\times 1}$，\,\,
+$\mathbf{1}_{c}=(1,1,...,1)'_{c\times1}$.\\
+\end{small}
+
+\end{frame}
+
+
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+
+\quad\quad
+ 这在此称
+   $$\mathbf{f}_{c}^{i}=(\frac{f_{i1}}{f_{i.}},\frac{f_{i2}}{f_{i.}},...,\frac{f_{ic}}{f_{i.}})'
+         \in\mathbf{R}^{c}.$$
+为因素$A$的第$i$个水平的分布轮廓.称$\mathbf{D}^{-1}_{r}\mathbf{F}$为因素$A$的轮廓矩阵.这里应该
+注意到，$\mathbf{f}^{i}_{c},$\quad$i=1,2,...,r$是超平面$x_{1}+x_{2}+...+x_{r}=1$的一点集.\\
+
+\end{frame}
+
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+\quad\quad
+ 同理，因素$B$的第$j$个水平的分布轮廓为
+$$\mathbf{f}_{r}^{j}=(\frac{f_{1j}}{f_{.j}},\frac{f_{2j}}{f_{.j}},...,\frac{f_{rj}}{f_{.j}})'
+    \in\mathbf{R}^{r}.$$
+并称$\mathbf{D}^{-1}_{c}\mathbf{F}'$为因素$B$的轮廓矩阵，同样$\mathbf{f}_{r}^{j},\quad
+j=1,2,...,c$
+是超平面$y_{1}+y_{2}+...+y_{c}=1$的一点集.\\
+
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+
+\quad\quad
+ 在此，我们应该明确：
+   $$\mathbf{D}_{r}\mathbf{1}_{r}=\mathbf{F}\mathbf{1}_{c},\quad\quad
+          \mathbf{1}'_{r}\mathbf{D}_{r}\mathbf{1}_{r}=\mathbf{1}'_{r}\mathbf{F}\mathbf{1}_{c}=1,$$
+   $$\mathbf{D}_{c}\mathbf{1}_{c}=\mathbf{F}'\mathbf{1}_{r},\quad\quad
+          \mathbf{1}'_{c}\mathbf{D}_{c}\mathbf{1}_{c}=\mathbf{1}'_{c}\mathbf{F}'\mathbf{1}_{r}=1.$$
+从上面的关系式，我们清楚地看到，$\mathbf{D}_{r}$和$\mathbf{D}_{c}$中的元素起到了权重的作用，称其为
+权重矩阵.
+
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+%\begin{large}
+\quad\quad {\color{magenta} {\hei 2. 总信息变差的量度}}
+ \vskip0.3cm
+
+\quad\quad
+ 针对因素$A$与因素$B$的轮廓矩阵引入卡方($\chi^{2}$)距离：
+    \begin{eqnarray}
+    d^{2}(i,i')=\sum^{c}_{j=1}\frac{1}{f_{.j}}(\frac{f_{ij}}{f_{i.}}-\frac{f_{i'j}}{f_{i'.}})^{2}\nonumber
+\\\quad\text{和}\quad
+    d^{2}(j,j')=\sum^{r}_{i=1}\frac{1}{f_{i.}}(\frac{f_{ij}}{f_{.j}}-\frac{f_{ij'}}{f_{.j'}})^{2}.
+    \end{eqnarray}
+\quad \quad 这样，根据拟合优度的准则，讨论卡方意义下的总信息变差的量度问题.\\
+
+%\end{large}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+\begin{footnotesize}
+\quad\quad 1)\quad 在$\chi^{2}$距离下，以重心计算因素$A$分布轮廓的量度协差阵为
+\begin{eqnarray}
+ \mathbf{S}_{r}\mathbf{D}_{c}^{-1}=\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1}
+         -\mathbf{f}_{c}\mathbf{f}_{c}'\mathbf{D}_{c}^{-1}\triangleq\mathbf{\widetilde{S}},
+\end{eqnarray}
+这里
+\begin{eqnarray}
+        \mathbf{S}_{r}&=&\sum^{r}_{i=1}f_{i.}(\mathbf{f}^{i}_{c}-\mathbf{f}_{c})
+                          (\mathbf{f}^{i}_{c}-\mathbf{f}_{c})' \nonumber\\
+                      &=&\sum^{r}_{i=1}f_{i.}\mathbf{f}^{i}_{c}(\mathbf{f}^{i}_{c})'
+                           -\mathbf{f}_{c}\mathbf{f}_{c}' \nonumber\\
+                      &=&\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}-
+                          \mathbf{f}_{c}\mathbf{f}_{c}',
+\end{eqnarray}
+\begin{eqnarray}
+\mathbf{f}_{c}=\sum^{r}_{i=1}f_{i.}\mathbf{f}_{c}^{i}=(f_{.1},f_{.2},...,f_{.c})'=\mathbf{1}'\mathbf{D}_{c},
+\end{eqnarray}
+并且称$\mathbf{f}_{c}$为关于因素$A$分布轮廓的重心.\\
+\color{magenta} 在$\chi^{2}$距离下，以原点计算因素$A$分布轮廓的量度协差阵为
+\begin{eqnarray}
+ \mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1}\triangleq\mathbf{S}.
+\end{eqnarray}
+\end{footnotesize}
+\end{frame}
+
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+\begin{footnotesize}
+\quad\quad 2)\quad 在$\chi^{2}$距离下，以重心计算因素$B$分布轮廓的量度协差阵为
+\begin{eqnarray}
+ \mathbf{S}_{c}\mathbf{D}_{r}^{-1}=\mathbf{F}\mathbf{D}_{c}^{-1}\mathbf{F}'\mathbf{D}_{r}^{-1}
+         -\mathbf{f}_{r}\mathbf{f}_{r}'\mathbf{D}_{r}^{-1}\triangleq\mathbf{\widetilde{Q}},
+\end{eqnarray}
+\begin{eqnarray}
+        \mathbf{S}_{c}&=&\sum^{c}_{j=1}f_{.j}(\mathbf{f}^{j}_{r}-\mathbf{f}_{r})
+                          (\mathbf{f}^{j}_{r}-\mathbf{f}_{r})'\nonumber \\
+                      &=&\sum^{r}_{i=1}f_{.j}\mathbf{f}^{j}_{r}(\mathbf{f}^{j}_{r})'
+                           -\mathbf{f}_{r}\mathbf{f}_{r}' \nonumber\\
+                      &=&\mathbf{F}\mathbf{D}_{c}^{-1}\mathbf{F}'-
+                          \mathbf{f}_{r}\mathbf{f}_{r}',
+\end{eqnarray}
+\begin{eqnarray}
+\mathbf{f}_{r}=\sum^{c}_{j=1}f_{j.}\mathbf{f}_{r}^{j}=(f_{1.},f_{2.},...,f_{c.})'=\mathbf{1}'\mathbf{D}_{r},
+\end{eqnarray}
+并且称$\mathbf{f}_{r}$为关于因素$B$分布轮廓的重心.\\
+\color{blue}在$\chi^{2}$距离下，以原点计算因素$B$分布轮廓的量度协差阵为
+\begin{eqnarray}
+ \mathbf{F}\mathbf{D}_{c}^{-1}\mathbf{F}'\mathbf{D}_{r}^{-1}\triangleq\mathbf{Q}.
+\end{eqnarray}
+\end{footnotesize}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}列联资料总信息变差的量度}
+
+%\begin{footnotesize}
+\quad\quad 那么，以重心量度的总信息变差为${\tt{tr}}(\mathbf{\widetilde{S}})$和${\tt{tr}}(\mathbf{\widetilde{Q}})$；以原点量度的总信息变差为${\tt{tr}}(\mathbf{S})$和${\tt{tr}}(\mathbf{Q})$.\\
+\quad\quad \color{blue} 这里应该注意到，${\tt{tr}}(\mathbf{\widetilde{S}})={\tt{tr}}(\mathbf{\widetilde{Q}})$，
+${\tt{tr}}(\mathbf{S})={\tt{tr}}(\mathbf{Q})$.
+%\end{footnotesize}
+\end{frame}
+
+%---------------------------------------------------------------------------------------------------
+\section{总信息变差与独立性检验统计量的关系}
+
+%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+\begin{large}
+\quad\quad 这里主要从两个方面剖析列联表.一是二维列联表的独立性检验；
+二是总信息变差的内涵.这个问题很少有人在严格的意义上把它们联系起来，现让我们联系起来分析，
+将能深刻地刻划出独立性检验与相应分析的内在关系.
+
+\end{large}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+\quad\quad {\color{magenta} {\hei 1. 二维列联表的独立性检验}}
+ \vskip0.3cm
+\begin{footnotesize}
+我们知道，频率矩阵$\mathbf{F}$相应的经验联合抽样分布可以表示为：
+$$P\{\xi=i,\eta=j\}=P\{\xi=i\}P\{\eta=j\},\quad i=1,2,...,r,  j=1,2,...,c,$$
+这里的$\xi$和$\eta$表示因素$A$和$B$的随机变量.则根据数理统计理论
+检验两个变量的独立性用如下统计量
+\begin{eqnarray}
+      W_{0}&=&\sum^{r}_{i=1}\sum^{c}_{j=1}\frac{(kf_{ij}-kf_{i.}f_{.j})^{2}}{kf_{i.}f_{.j}}  \nonumber\\
+              &=&k\sum^{r}_{i=1}\sum^{c}_{j=1}\frac{(f_{ij}-f_{i.}f_{.j})^{2}}{f_{i.}f_{.j}}  \nonumber\\
+              &\triangleq&k\sum^{r}_{i=1}\sum^{c}_{j=1}(z_{ij})^{2},
+\end{eqnarray}
+其中$z_{ij}=(f_{ij}-f_{i.}f_{.j})/\sqrt{f_{i.}f_{.j}}$.
+当假设$H_{0}$：两变量$\xi$和$\eta$独立成立时，随着$k\longrightarrow\infty$时，统计量$W_{0}$
+服从自由度为$(n-1)(p-1)$的$\chi^{2}$分布.
+\end{footnotesize}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+\quad\quad
+由上面分析知，从因素$A$和因素$B$出发量度总信息变差是一样的，为了叙述方便我们就因素
+$A$的分布轮廓展开讨论.\\
+\vskip0.3cm
+ \quad\quad{\color{magenta}\hei 定理1}
+%\begin{thm}
+     $\mathbf{f}_{c}$是$\mathbf{\widetilde{S}}=\mathbf{S}_{r}\mathbf{D}_{c}^{-1}$的特征值
+    等于0时相应的特征向量；$\mathbf{f}_{c}$是
+    $\mathbf{S}=\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1}$
+     的特征值等于1时相应的特征向量.
+%\end{thm}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+\begin{footnotesize}
+ {\hei {证：}}\quad 由于$(\mathbf{f}^{i}_{c}-\mathbf{f}_{c})'\mathbf{D}_{c}^{-1}\mathbf{f}_{c}=0$，
+                  由(3)式知
+\begin{eqnarray}
+                   \mathbf{\widetilde{S}}\mathbf{f}_{c}=\mathbf{S}_{r}\mathbf{D}_{c}^{-1}\mathbf{f}_{c}=
+                      \sum^{r}_{i=1}f_{i.}(\mathbf{f}^{i}_{c}-\mathbf{f}_{c})(\mathbf{f}^{i}_{c}-\mathbf{f}_{c})'
+                       \mathbf{D}_{c}^{-1}\mathbf{f}_{c}=0.
+\end{eqnarray}
+即说明，$\mathbf{f}_{c}$是$\mathbf{\widetilde{S}}$的特征值等于0时相应的特征向量.\\
+在再根据(1)、(5)及(11)式
+       \begin{eqnarray}
+          0=\mathbf{\widetilde{S}}\mathbf{f}_{c}&=&
+                \mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1}\mathbf{f}_{c}
+                -\mathbf{f}_{c}\mathbf{f}_{c}'\mathbf{D}_{c}^{-1}\mathbf{f}_{c}   \nonumber\\
+                &=&\mathbf{S}\mathbf{f}_{c}-\mathbf{f}_{c},
+       \end{eqnarray}
+即
+                  $$\mathbf{S}\mathbf{f}_{c}=\mathbf{f}_{c}.$$
+ 从而，$\mathbf{f}_{c}$是$\mathbf{S}$的特征值等于1时相应的特征向量.定理(1)得证.\quad $\sharp$
+
+ \end{footnotesize}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+ \quad\quad {\color{magenta}\hei 定理2}
+         除$\mathbf{f}_{c}$以外，
+        原点协差矩阵$\mathbf{S}=\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1}$
+        的特征向量$u_{k}$及其所对应的特征根与
+        重心协差矩阵$\mathbf{\widetilde{S}}=\mathbf{S}_{r}\mathbf{D}_{c}^{-1}$是完全一致的.
+
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+\begin{footnotesize}
+ {\hei {证：}}\quad\quad 取重心协差阵$\mathbf{\widetilde{S}}$任一特征向量
+                   $u_{k}(u_{k}\neq\mathbf{f}_{c})$，根据(2)和(5)有
+                    $$\mathbf{\widetilde{S}}u_{k}=\mathbf{S}u_{k}-\mathbf{f}_{c}\mathbf{f}_{c}'\mathbf{D}_{c}^{-1}u_{k}=0.$$
+                    由定理1知，$\mathbf{f}_{c}$与$u_{k}$均为$\mathbf{\widetilde{S}}$的特征向量，那么，
+                   $\mathbf{f}'_{c}\mathbf{D}_{c}^{-1}u_{k}=0$，则
+                   $$\mathbf{\widetilde{S}}u_{k}=\mathbf{S}u_{k},$$
+                   令$u_{k}$对应的特征值为$\beta_{k}$，所以
+                    $$\mathbf{\widetilde{S}}u_{k}=\beta_{k}u_{k},$$相应地，亦有
+                    $$\mathbf{S}u_{k}=\beta_{k}u_{k},$$
+                    从而，定理(2)得证.\quad $\sharp$
+
+ \end{footnotesize}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+ \quad\quad {\color{magenta}\hei 定理3}
+         在$\chi^{2}$距离意义下，以重心距离反映$\mathbf{F}$的总信息变差
+           与以原点距离反映的总信息变差之间相差单位1.即${\tt{tr}}(\mathbf{S})-{\tt{tr}}(\mathbf{\widetilde{S}})=1.$
+
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+\begin{footnotesize}
+ {\hei {证：}}由于
+                ${\tt{tr}}(\mathbf{f}_{c}\mathbf{f}'_{c}\mathbf{D}_{c}^{-1})=
+                {\tt{tr}}(\mathbf{f}'_{c}\mathbf{D}_{c}^{-1}\mathbf{f}_{c})=
+                 {\tt{tr}}(1)=1$，再由(2)和(5)得到
+         \begin{eqnarray}
+                 {\tt{tr}}(\mathbf{\widetilde{S}})&=&
+                   {\tt{tr}}(\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1})
+                   -{\tt{tr}}(\mathbf{f}_{c}\mathbf{f}'_{c}\mathbf{D}_{c}^{-1})   \nonumber\\
+                   &=&{\tt{tr}}(\mathbf{S})-1.  \nonumber
+         \end{eqnarray}
+从而${\tt{tr}}(\mathbf{S})-{\tt{tr}}(\mathbf{\widetilde{S}})=1$.这样，定理(3)得证.\quad
+$\sharp$ \vskip0.3cm
+\quad\quad 这里我们应该注意到，在$\chi^{2}$距离意义下，以原点距离反映$\mathbf{F}$的总信息变差为
+$\sum^{r}_{i=1}f_{i.}d^{2}(\mathbf{f}^{i}_{c},0)=
+{\tt{tr}}(\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1})$，而以重心距离反映的总信息变差为
+$\sum^{r}_{i=1}f_{i.}$ $d^{2}(\mathbf{f}^{i}_{c},\mathbf{f}_{c})$
+ $={\tt{tr}}(\mathbf{S}_{r}\mathbf{D}_{c}^{-1})$.
+
+ \end{footnotesize}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+ \quad\quad {\color{magenta}\hei 定理4}
+         设二维列联表的频率矩阵为$\mathbf{F}=(f_{ij})_{r\times c}$，样本容量为$k$.检验两因素独立性的$\chi^{2}$统计量为$W_{0}$，
+           以重心和原点计算因素$A$分布轮廓的度量协差阵分别为$\mathbf{S}_{r}\mathbf{D}_{c}^{-1}$和
+           $\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1}$，则
+             $$k{\tt{tr}}(\mathbf{S}_{r}\mathbf{D}_{c}^{-1})=W_{0}\quad\text{或者}\quad
+             k({\tt{tr}}(\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1})-1)=W_{0}.$$
+\end{frame}
+%%---------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+\begin{footnotesize}
+{\hei {证：}}在此我们对用重心距离的表示详细证明，这一距离相应的总信息变差为
+\begin{eqnarray}
+              {\tt{tr}}(\mathbf{S}_{r}\mathbf{D}_{c}^{-1})
+              &=&\sum^{r}_{i=1}f_{i.}d^{2}(\mathbf{f}^{i}_{J},\mathbf{f}_{J}) \nonumber\\
+              &=&\sum^{r}_{i=1}f_{i.}\sum^{c}_{j=1}\frac{1}{f_{.j}}(\frac{f_{ij}}{f_{i.}}-f_{.j})^{2} \nonumber\\
+              &=&\sum^{r}_{i=1}\sum^{c}_{j=1}\frac{(f_{ij}-f_{i.}f_{.j})^{2}}{f_{i.}f_{.j}}\nonumber\\
+              &=&\sum^{r}_{i=1}\sum^{c}_{j=1}(z_{ij})^{2}        \nonumber\\
+              &=&W_{0}/k. \nonumber
+\end{eqnarray}
+即
+\begin{eqnarray}
+k{\tt{tr}}(\mathbf{S}_{r}\mathbf{D}_{c}^{-1})=W_{0}.
+\end{eqnarray}
+根据上面结论，由定理3容易得到
+             ${\tt{tr}}(\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1})=W_{0}/k+1$.从而
+             \begin{eqnarray}
+                k({\tt{tr}}(\mathbf{F}'\mathbf{D}_{r}^{-1}\mathbf{F}\mathbf{D}_{c}^{-1})-1)=W_{0}.
+             \end{eqnarray}
+这样，定理(4)得证.\quad $\sharp$
+ \end{footnotesize}
+\end{frame}
+%%----------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}总信息变差与独立性检验统计量的关系}
+
+ \quad\quad 这里我们需要说明的是，如果以重心和原点计算因素$B$分布轮廓的量度协差阵分别为
+$\mathbf{S}_{c}\mathbf{D}_{r}^{-1}$和$\mathbf{F}'\mathbf{D}_{c}^{-1}\mathbf{F}\mathbf{D}_{r}^{-1}$，
+同样亦有：
+\begin{eqnarray}
+    \begin{aligned}
+      k{\tt{tr}}(\mathbf{S}_{c}\mathbf{D}_{r}^{-1})=W_{0},\quad\quad\quad\\
+      k({\tt{tr}}(\mathbf{F}\mathbf{D}_{c}^{-1}\mathbf{F'}\mathbf{D}_{r}^{-1})-1)=W_{0}.
+     \end{aligned}
+\end{eqnarray}
+\end{frame}
+%%----------------------------------------------------------------------------------------
+%---------------------------------------------------------------------------------------------------
+\section{独立性检验的强弱性分析}
+
+%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+\quad\quad {\color{magenta} {\hei 1. 基本思想}}
+ \vskip0.3cm
+\begin{footnotesize}
+根据数理统计理论，检验两个变量的独立性用统计量(10)，即为
+\begin{eqnarray}
+    W_{0}=k(\sum^{r}_{i=1}\sum^{c}_{j=1}\frac{f_{ij}^{2}}{f_{i.}f_{.j}}-1),
+\end{eqnarray}
+另外，我们注意到总信息变差
+\begin{eqnarray}
+   {\tt{tr}}(\mathbf{F}'\mathbf{D}^{-1}_{r}\mathbf{F}\mathbf{D}^{-1}_{c})=
+       {\tt{tr}}(\mathbf{D^{-\frac{1}{2}}}\mathbf{F}'\mathbf{D}^{-1}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c})=
+       1-\sum^{l_{0}}_{i=1}\beta_{i},
+\end{eqnarray}
+其中，$\beta_{i},\,
+i=1,2,...,l_{0}$均为以原点量度的协差阵$\mathbf{S}=\mathbf{F}'\mathbf{D}^{-1}_{r}\mathbf{F}\mathbf{D}^{-1}_{c}$
+非零特征值，且要求$1>\beta_{1}\geq\cdots\geq\beta_{l_{0}}>0$
+\end{footnotesize}
+
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+
+\begin{footnotesize}
+由定理(4)知
+\begin{eqnarray}
+   W_{0}=k({\tt{tr}}(\mathbf{F}'\mathbf{D}^{-1}_{r}\mathbf{F}\mathbf{D}^{-1}_{c})-1)=k\sum^{l_{0}}_{i=1}\beta_{i}.
+\end{eqnarray}
+即上述的统计量$W_{0}$就是以原点量度的协差阵$\mathbf{S}$中的小于1的特征值和的$k$倍.因此，检验零假设$H_{0}$:两变量(即两因素)独立，
+完全取决于抽样大小$k$和小于1的特征值和的大小.当给定显著水平$\alpha$，如果
+$k
+\sum^{l_{0}}_{i=1}\beta_{i}<\chi^{2}_{(r-1)(c-1),\alpha}$，则认为在水平$\alpha$下两组因素是独立的.
+这说明所得到的列联表数据仅仅是反映随机误差的，而没有包
+含两组因素的关联信息，这时如果仍然进行两因素关系进行分析的话，所得的结果只能是虚假的.\\
+如果拒绝了零假设，则认为适合两组因素之间有一定的关联关系.那么，人们会进一步问，在有关联关系的情形下，
+该用分析中的多少个特征值或在多少维投影子空间才能反映两组因素的关联关系，而其余的则不是呢？
+这就需要讨论独立性检验的强弱性.
+\end{footnotesize}
+
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+\quad\quad {\color{magenta} {\hei 2.独立性强弱分析及统计模拟}}
+ \vskip0.3cm
+\begin{footnotesize}
+独立性检验统计量的构造得知统计量$W_{0}$就是下列矩阵的迹.
+$$\mathbf{T}'\mathbf{T},$$
+其中
+\begin{eqnarray}
+  \mathbf{T}=\Bigl(\frac{f_{ij}}{\sqrt{f_{i.}f_{.j}}}-\frac{f_{i.}f_{.j}}{\sqrt{f_{i.}f_{.j}}}\Bigl)_{r\times c}
+  =\mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}-
+    \mathbf{D}^{\frac{1}{2}}_{r}\mathbf{1}_{r}\mathbf{1}'_{c}\mathbf{D}^{\frac{1}{2}}_{c},
+\end{eqnarray}
+在此我们引入定义.\\
+ \quad\quad{\color{magenta}\hei 定义}
+      设二维列联表的频率矩阵为$\mathbf{F}$，相对于因素$A$与因素$B$的权重矩阵为$\mathbf{D}_{r}$和$\mathbf{D}_{c}$.
+      则称$\mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}$为卡方标准化频率矩阵.
+
+\end{footnotesize}
+
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+
+ \begin{footnotesize}
+ \quad\quad{\color{magenta}\hei 定理5}
+ 独立性检验的$\chi^{2}$统计量$W_{0}$是卡方标准化频率矩阵在正交于矩阵$\mathbf{S}$或$\mathbf{Q}$的最大特征值为1
+时对应的平凡子空间的空间的$k$倍变差.\\
+{\hei {证：}}\quad 对卡方标准化频率矩阵$\mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}$
+进行奇异值分解：
+\begin{eqnarray}
+     \mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}=
+     \mathbf{D}^{\frac{1}{2}}_{r}\mathbf{1}_{r}\mathbf{1}'_{c}\mathbf{D}^{\frac{1}{2}}_{c}+
+     \sum^{l_{0}}_{i=1}\sqrt{\beta_{i}}\mathbf{D}^{-\frac{1}{2}}_{r}v_{i}u_{i}'\mathbf{D}^{-\frac{1}{2}}_{c},
+\end{eqnarray}
+这里$u_{i}$和$v_{i}$分别是矩阵$\mathbf{S}$和$\mathbf{Q}$对应于小于1的第$i$大特征值$\beta_{i}$对应的特征向量，且满足
+\begin{eqnarray}
+u'_{i}\mathbf{D}^{-1}_{c}u_{j}=
+\begin{cases}0,&i\neq j,\\1,& i=j,
+\end{cases}
+\quad\quad \text{和}\quad\quad v'_{i}\mathbf{D}^{-1}_{r}v_{j}=
+\begin{cases}0,&i\neq j,\\1,& i=j.
+\end{cases}
+\end{eqnarray}
+\end{footnotesize}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+ \xiaowu
+ \quad\quad 由于$\mathbf{D}^{-\frac{1}{2}}_{c}u_{i}$和$\mathbf{D}^{-\frac{1}{2}}_{r}v_{i}$分别为矩阵
+$\mathbf{S}^{*}=\mathbf{D}^{-\frac{1}{2}}_{c}\mathbf{F}'\mathbf{D}^{-1}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}$
+和$\mathbf{Q}^{*}=\mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-1}_{c}\mathbf{F}'\mathbf{D}^{-\frac{1}{2}}_{r}$
+对应于小于1的第$i$大特征值的标准特征向量.特别地，$\mathbf{D}^{\frac{1}{2}}_{c}\mathbf{1}_{c}$和
+$\mathbf{D}^{\frac{1}{2}}_{r}\mathbf{1}_{r}$分别为$\mathbf{S}^{*}$和$\mathbf{Q}^{*}$对应于最大特
+征值1的标准化特征向量.\\
+\quad\quad 从而可知(20)式就是卡方标准化频率矩阵在依特征值大小的正交特征子空间的奇异分解.\\
+\quad\quad 又由于(20)式中第一项是在最大特征值1对应的子空间的投影，具有变差1，显然这一项是平凡的.
+由定理(4)知，独立性检验的$\chi^{2}$统计量$W_{0}$正是卡方标准化频率矩阵在正交于这一平凡子空间的
+空间的$k$倍变差.从而，定理(5)得证.\quad $\sharp$
+\end{footnotesize}
+\end{frame}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+ \quad\quad 针对独立性检验，在两组因素独立的零假设下，即假设总体分布$\mathbf{F}=(f_{ij})_{r\times c}$时，则
+根据拟合优度检验的有关理论，统计量$W_{0}$
+有渐近的自由度为$(r-1)(c-1)$的$\chi^{2}$分布.由定理(5)
+知，独立检验的零假设$H_{0}$可表达为总体的卡方标准化分布，有分解：
+\begin{eqnarray}
+     \mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}=
+     \mathbf{D}^{\frac{1}{2}}_{r}\mathbf{1}_{r}\mathbf{1}'_{c}\mathbf{D}^{\frac{1}{2}}_{c}.
+\end{eqnarray}
+如果假设被拒绝，则认为两组因素有一定的关联关系，即认为至少有变差$\beta_{1}$是反映两组因素有关联关系的.\\
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+ \quad\quad 如果仅有这一个变差是反映这两组因素有关联关系(记为零假设$H_{10}$)，即是假设总体卡方标准化分布矩阵
+有分解
+\begin{eqnarray}
+     \mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}=
+     \mathbf{D}^{\frac{1}{2}}_{r}\mathbf{1}_{r}\mathbf{1}'_{c}\mathbf{D}^{\frac{1}{2}}_{c}+
+     \sqrt{\beta_{1}}\mathbf{D}^{-\frac{1}{2}}_{r}v_{1}u_{1}'\mathbf{D}^{-\frac{1}{2}}_{c}.
+\end{eqnarray}
+这一假设$H_{10}$可表达为：总体分布矩阵$\mathbf{F}=(f_{i.}f_{.j}+\sqrt{\beta_{1}}v_{1i}u_{1j})_{r\times
+c}$，
+其中$v_{1}=(v_{11},...,v_{1r})'$和$u_{1}=(u_{11},...,u_{1c})'$分别为分布总体下对应矩阵$\mathbf{S}$和
+$\mathbf{Q}$小于1的最大特征值$\beta_{1}$的特征向量，且满足(21)式，其它参数也为总体参数.\\
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+ \quad\quad 为检验该假设，取统计量
+\begin{eqnarray}
+     W_{1}=W_{0}-k\beta_{1}.  \nonumber
+\end{eqnarray}
+记(20)式两边的样本之差为
+\begin{eqnarray}
+  \mathbf{T}_{1}=\mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}-
+                \mathbf{D}^{\frac{1}{2}}_{r}\mathbf{1}_{r}\mathbf{1}'_{c}\mathbf{D}^{\frac{1}{2}}_{c}-
+                \sqrt{\beta_{i}}\mathbf{D}^{-\frac{1}{2}}_{r}v_{1}u_{1}'\mathbf{D}^{-\frac{1}{2}}_{c},
+                \nonumber
+\end{eqnarray}
+则有
+\begin{eqnarray}
+                W_{1}=k{\tt{tr}}(\mathbf{T}_{1}'\mathbf{T}_{1})=
+                      k\sum^{r}_{i=1}\sum^{c}_{j=1}\frac{(f_{ij}-f_{i.}f_{.j}-\sqrt{\beta}_{1}v_{1i}u_{1j})^{2}}
+                      {f_{i.}f_{.j}}.
+                \nonumber
+\end{eqnarray}
+通过统计模拟，可知统计量$W_{1}$有渐近服从自由度为$(r-2)(c-2)$的$\chi^{2}$分布.\\
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+ \quad\quad 为一般地，考虑零假设$H_{l0}$：有且仅有前$l(\leq l_{0})$个变差$\sum^{l}_{i=1}\beta_{i}$反映两组因素
+关联关系，即其总体的分布矩阵满足：
+\begin{eqnarray}
+               \mathbf{F}=(f_{i.}f_{.j}+\sum^{l}_{m=1}\sqrt{\beta_{m}}v_{mi}u_{mj})_{r\times c},
+\end{eqnarray}
+或者说总体卡方标准化分布矩阵有分解
+\begin{eqnarray}
+     \mathbf{D}^{-\frac{1}{2}}_{r}\mathbf{F}\mathbf{D}^{-\frac{1}{2}}_{c}=
+     \mathbf{D}^{\frac{1}{2}}_{r}\mathbf{1}_{r}\mathbf{1}'_{c}\mathbf{D}^{\frac{1}{2}}_{c}+
+     \sum^{l}_{i=1}\sqrt{\beta_{i}}\mathbf{D}^{-\frac{1}{2}}_{r}v_{i}u_{i}'\mathbf{D}^{-\frac{1}{2}}_{c}.
+\end{eqnarray}
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+  \quad\quad 为检验该假设，取统计量
+\begin{eqnarray}
+     W_{l}=W_{0}-k\sum^{l}_{m=1}\beta_{m},
+\end{eqnarray}
+即 则有
+\begin{eqnarray}
+                W_{l}= k\sum^{r}_{i=1}\sum^{c}_{j=1}\frac{(f_{ij}-f_{i.}f_{.j}-\sum^{l}_{m=1}\sqrt{\beta}_{m}v_{mi}u_{mj})^{2}}
+                      {f_{i.}f_{.j}}.
+\end{eqnarray}
+同样根据统计模拟，可得知统计量$W_{l}$有渐近服从自由度为$(r-l-1)(c-l-1)$的$\chi^{2}$分布.\\
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+  \quad\quad 综上所述，这样就得到了相应分析的依次检验程序：对于给定的显著性水平$\alpha$,首先对零假设$H_{0}$检验，
+计算统计量$W_{0}$，判断$W_{0}$是否大于临界值$\chi^{2}_{(r-1)(c-1),\alpha}$，如果否，则检验结束.认为两因
+素之间不存在关联关系，并称因素$A$和因素$B$具有零度关联性；如果是，则对零假设$H_{10}$
+进行检验，计算统计量$W_{1}$，判断$W_{1}$是否大于临界值$\chi^{2}_{(r-2)(c-2),\alpha}$，如果否，则检验结束，并
+称两因素具有一度关联性；重复上述检验和相应分析，直到对某个$l$，
+如果算得统计量$W_{l}$对检验假设$H_{l0}$被拒绝，而算得统计量$W_{l+1}$对检验假设$H_{(l+1)0}$被接受，则结束
+检验，称两因素有$l$度关联性，这时认为两因素的关联程度较强.
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+  \quad\quad 模拟实例 .给定两组因素$A$和$B$，分别含5个变量和4个变量.表a的数据反映的是两个因素基本独立；
+表b的数据反映两因素有些相关，即偏离独立，但并不严重；表c的数据是反映两因素几乎完全独立，是用来作比较的，三个表
+有相同的行列边际$(300,160,400,140)'$和$(120,100,130,250,400)'$.\\
+ \quad\quad 现在我们对表a和表b的数据作检验和分析.
+\end{footnotesize}
+\end{frame}
+
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+ \centering
+ 表1：两因素模拟数据
+\begin{table}[!htbp]
+\begin{center}
+\begin{tabular}{c c }
+表a.\quad 两因素数据(1)&表b.\quad 两因素数据(2)\\
+\begin{tabular}{c|c c c c c}                                    \hline
+             \quad& $B_{1}$ &$B_{2}$&$B_{3}$ & $B_{4}$               \\\hline
+     $A_{1}$\quad&36       &19     &48      &17     \\
+      $A_{2}$\quad&33       &13     &40      &14     \\
+     $A_{3}$\quad&39       &21     &52      &18        \\
+     $A_{4}$\quad&75       &45     &100     &30         \\
+      $A_{5}$\quad&117      &62     &160     &61     \\ \hline
+
+\end{tabular}
+&
+\begin{tabular}{c|c c c c c}                                    \hline
+            \quad& $B_{1}$ &$B_{2}$&$B_{3}$ & $B_{4}$               \\\hline
+   $A_{1}$\quad&36       &19     &56      &9    \\
+    $A_{2}$\quad&36       &10     &40      &14      \\
+     $A_{3}$\quad&39       &21     &44      &26        \\
+     $A_{4}$\quad&75       &48     &105     &22         \\
+    $A_{5}$\quad&114      &62     &155     &69   \\ \hline
+
+\end{tabular}\\
+ 表c.\quad 两因素数据(3)&\\
+
+\begin{tabular}{c|c c c c c}                                    \hline
+             \quad& $B_{1}$ &$B_{2}$&$B_{3}$ & $B_{4}$               \\\hline
+    $A_{1}$\quad&36       &19     &48      &17    \\
+     $A_{2}$\quad&30       &16     &40      &14    \\
+   $A_{3}$\quad&39       &21     &52      &18        \\
+     $A_{4}$\quad&75       &40     &100     &35         \\
+      $A_{5}$\quad&120      &64     &160     &56    \\ \hline
+\end{tabular}\\
+&
+\end{tabular}
+\end{center}
+\end{table}
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+   \quad\quad 例中的参数为$k=1000$，$n=5$，$p=4$.首先对表a的数据作分析.算得$\mathbf{S}$阵的四个非零特征值是$1, 0.0021, 0.0007, 0$.
+检验$H_{0}$(即两组因素独立)的统计量$W_{0}$的值为$W_{0}=2.7943$，与自由度为12的$\chi^{2}$在显著水平$\alpha=0.05$
+下的临界值21.03比较，有$2.7943<21.03$，故接受零假设.事实上，该数据与完全独立的表c
+的数据只有稍许差别，可以认为只是随机误差所至.可见和直观分析一致.
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+   \quad\quad 看表b的数据.算得$\mathbf{S}$阵的四个非零特征值是1, 0.0180, 0.0043,
+  0.0009.依次检验的统计量数据和结果见表2.\\
+\centering
+ 表2：对两因素数据(2)的检验分析
+\begin{table}[!htbp]
+\xiaowu
+\begin{center}
+\begin{tabular}{c|c c c c c}                                    \hline
+      假设检验     & 统计量值      &$\chi^{2}$自由度&显著水平$\alpha$ & 临界值 &检验结果              \\\hline
+     \quad$H_{0}$ &$W_{0}=23.1976$&12              &0.05             &21.03   &拒绝  \\
+      \quad$H_{10}$&$W_{1}=5.1976$ &6               &0.05             &12.59  &接受  \\
+     \quad$H_{20}$&$W_{2}=0.8976$ &2               &0.05             &5.99   &接受    \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+\begin{frame}\frametitle{\color{blue}独立性检验的强弱性分析}
+ \begin{footnotesize}
+   \quad\quad
+   从表2的数据结果判断提示，对表b数据有必要作相应分析，而且只需要作降至一维的相应分析就足够了，如果进行降至更
+高维的相应分析，可能是虚假的，即可能将随机误差当成关联关系.将表b数据和表c数据比较，分析有系统差别但并不十
+分严重，因而可能只存在轻微的关联关系.可见这里的检验结果和分析是合理的.
+\end{footnotesize}
+\end{frame}
+%%-----------------------------------------------------------
+
+%%---------------------------------------------------------------------------------------------------
+
+%%===================================================================================================
+\section{参考文献}
+%%---------------------------------------------------------------------------------------------------
+\begin{frame}\frametitle{参考文献}
+
+\liuhao
+ \indent[1]. Agrawal, R., Imielinski, T. and Swami, A. (1993), Mining Association Rules Between Sets of Items in Large Database , {\it Proc of ACM SIGMOD Intl Conf on Management of Data}, 207-216\\
+\indent[2]. Brin, S., Motwani, R. and Silverstein, C. (1997), Beyond Market Basket: Generalizing Association Rules to Correlations ,{\it 1997 Int. Conf. Management of Data}, 265-276\\
+\indent[3]. Benz\'{e}cri, J. P. (1992), {\it Correspondence Analysis Handbook} , Marcel Dekker, Inc., New York\\
+\indent[4]. 陈希孺, 倪国熙编著 (1988), {\it 数理统计学教程}，上海科学技术出版社 \\
+\indent[5]. Cramor, H. (1946), {\it Mathematical Methods for Statistics}, Prineeton Univ. Press\\
+\indent[6]. Everitt, B. S. (1977), {\it The analysis Contingency Tables} , Chapman and Hall , New York\\
+\indent[7]. 胡国定, 张润楚著 (1989), {\it 多元数据分析方法——纯代数理论}, 南开大学出版社 \\
+\indent[8]. Kendall, M. and Stuart, A. (1979), The Advanced Theory of Ststisties,  {\it Charles Griffin} \& {\it Conpany Limiled}, London, {\bf Vol. 2.Ch}. 33\\
+\indent[9]. Pearson, K. {\it On the Theory of Contingency and Its Relation to Association and Normal Correlation}, Drapers' Co Memoirs, Biometrie Scries No. 1 London\\
+\indent[10]. Silverstein, C.,Brin, S., Motwani, R. and Ullman, J. (1998), Scalable Techniques for Mining Causal Structures, 1998 Int. Conf. Very Large Data Bases, 594-605\\
+\indent[11]. van de Velden, M. and Neudecker, H. (2000), On an Eigenvalue Property in Correspondence Analysis and Related Methods, {\it Liner Algebra and its Applications}, {\bf321}, 347-364\\
+\indent[12]. 张尧庭, 谢邦昌, 朱世武 (2001), {\it  数据挖掘入门及应用}, 中国统计出版社, 34-36\\
+\indent[13]. 张润楚, 朱建平 (2002), 相应分析的适应性检验, {\it 第七届全国概率统计学术会议报告}\\
+\indent[14]. 朱建平 (2003), Data Mining中的统计方法及其应用, {\it 博士论文} 71-93\\
+\indent[15]. 朱建平 (2004.1), 数据挖掘中事务性数据库的压缩及其应用, {\it 统计研究}, {\bf 147}, 38-43\\
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{frame}
+ \begin{center}
+{\huge \textbf{\textcolor[rgb]{0.50,0.20,.90}{Thank  ~you!}}}               \\
+\vspace{5mm}\xiaowu
+\begin{tabular}{ll}
+{\sc Author}:  & Zhu Jianping                                           \\
+{\sc Address}: & Dept. of Statistics                            \\
+               & Xiamen University                                          \\
+               & FJ, P.R.CHINA, 361005                                     \\
+  {\sc Phone}: & 0592-2186371                          \\
+  {\sc Email}: & \href{mailto:xmjpzhu@xmu.edu.cn}{ \color{blue}xmjpzhu@xmu.edu.cn }\\
+\end{tabular}
+\end{center}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\end{document}

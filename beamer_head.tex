@@ -1,0 +1,171 @@
+\documentclass[table]{beamer}
+%[]中可以使用handout、trancompress等参数
+\useoutertheme[height=0.1\textwidth,width=0.15\textwidth,hideothersubsections]{sidebar}
+%指定beamer的模式与主题
+\mode<presentation>
+{
+  \usetheme{Berkeley}
+  \usecolortheme{dolphin}      % Outer color themes: whale, seahorse, dolphin
+  \usecolortheme{lily}     % Inner color themes: lily, orchid
+  \useinnertheme[shadow]{rounded}
+  \setbeamercolor{sidebar}{bg=blue!50}
+  \setbeamercolor{background canvas}{bg=blue!9}
+  %\usetheme{Madrid}
+%\usetheme{Boadilla}
+%\usecolortheme{default}
+%\usecolortheme{orchid}
+%\usecolortheme{whale}
+%\usefonttheme{professionalfonts}
+}
+
+
+
+%\usetheme{Madrid}
+%这里还可以选择别的主题：Bergen, Boadilla, Madrid, AnnArbor, CambridgeUS, Pittsburgh, Rochester, Warsaw, ...
+%有导航栏的Antibes, JuanLesPins, Montpellier, ...
+%有内容的Berkeley, PaloAlto, Goettingen, Marburg, Hannover, ...
+%有最小导航栏的Berlin, Ilmenau, Dresden, Darmstadt, Frankfurt, Singapore, Szeged, ...
+%有章和节表单的Copenhagen, Luebeck, Malmoe, Warsaw, ...
+
+%\usecolortheme{default}
+%设置内部颜色主题(这些主题一般改变block里的颜色);这个主题一般选择动物来命名
+%这里还可以选择别的颜色主题,如默认的和有特别目的的颜色主题default,structure,sidebartab,全颜色主题albatross,beetle,crane,dove,fly,seagull,wolverine,beaver
+
+%\usecolortheme{orchid}
+%设置外部颜色主题(这些主题一般改变title里的颜色);这个主题一般选择植物来命名
+%这里还可以选择别的颜色主题,如默认的和有特别目的的颜色主题lily,orchid,rose
+
+%\usecolortheme{whale}
+%设置字体主题;这个主题一般选择海洋动物来命名
+%这里还可以选择别的颜色主题,如默认的和有特别目的的颜色主题whale,seahorse,dolphin
+
+%\usefonttheme{professionalfonts}
+%类似的还可以定义structurebold,structuresmallcapsserif,professionalfonts
+
+
+% 控制 beamer 的风格,可以根据自己的爱好修改
+%\usepackage{beamerthemesplit} %使用 split 风格
+%\usepackage{beamerthemeshadow} %使用 shadow 风格
+%\usepackage[width=2cm,dark,tab]{beamerthemesidebar}
+
+
+% 设定英文字体
+
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\setsansfont{Arial}
+%\setmonofont{Courier New}
+\setmonofont{Consolas}
+\usefonttheme{serif}
+
+% 设定中文字体
+\usepackage[BoldFont,SlantFont,CJKchecksingle,CJKnumber]{xeCJK}
+\setCJKmainfont{SimSun}
+%\setCJKmainfont[BoldFont={Adobe Heiti Std},ItalicFont={Adobe Kaiti Std}]{WenQuanYi Micro Hei}
+\setCJKsansfont{Adobe Heiti Std}
+\setCJKmonofont{Adobe Fangsong Std}
+\punctstyle{hangmobanjiao}
+\setCJKfamilyfont{hei}{Adobe Heiti Std}
+\setCJKfamilyfont{kai}{Adobe Kaiti Std}
+\setCJKfamilyfont{fangsong}{Adobe Fangsong Std}
+\newcommand\kai{\CJKfamily{kai}}
+\newcommand\hei{\CJKfamily{hei}}
+\newcommand\fangsong{\CJKfamily{fangsong}}
+
+% 重定义字号命令
+\newcommand{\xiaochu}{\fontsize{30pt}{40pt}\selectfont}    % 小初, 1.5倍行距
+\newcommand{\yihao}{\fontsize{26pt}{36pt}\selectfont}    % 一号, 1.4倍行距
+\newcommand{\erhao}{\fontsize{22pt}{28pt}\selectfont}    % 二号, 1.25倍行距
+\newcommand{\xiaoer}{\fontsize{18pt}{18pt}\selectfont}    % 小二, 单倍行距
+\newcommand{\sanhao}{\fontsize{16pt}{24pt}\selectfont}    % 三号, 1.5倍行距
+\newcommand{\xiaosan}{\fontsize{15pt}{22pt}\selectfont}    % 小三, 1.5倍行距
+\newcommand{\sihao}{\fontsize{14pt}{21pt}\selectfont}    % 四号, 1.5倍行距
+\newcommand{\banxiaosi}{\fontsize{13pt}{19.5pt}\selectfont}    % 半小四, 1.5倍行距
+\newcommand{\xiaosi}{\fontsize{12pt}{15pt}\selectfont}    % 小四, 1.25倍行距
+\newcommand{\dawuhao}{\fontsize{11pt}{11pt}\selectfont}    % 大五号, 单倍行距
+\newcommand{\wuhao}{\fontsize{10.5pt}{10.5pt}\selectfont}    % 五号, 单倍行距
+\newcommand{\xiaowu}{\fontsize{9pt}{9pt}\selectfont}    % 小五号, 单倍行距
+\newcommand{\liuhao}{\fontsize{7.875pt}{7.875pt}\selectfont}  % 字号设置
+\newcommand{\qihao}{\fontsize{5.25pt}{5.25pt}\selectfont}    % 字号设置
+
+\defaultfontfeatures{Mapping=tex-text}
+\usepackage{xunicode}
+\usepackage{xltxtra}
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+\usepackage{setspace}
+\usepackage{colortbl,xcolor}
+\usepackage{hyperref}
+%\hypersetup{xetex,bookmarksnumbered=true,bookmarksopen=true,pdfborder=1,breaklinks,colorlinks,linkcolor=blue,filecolor=black,urlcolor=cyan,citecolor=green}
+\hypersetup{xetex,bookmarksnumbered=true,bookmarksopen=true,pdfborder=1,breaklinks,colorlinks,linkcolor=cyan,filecolor=black,urlcolor=blue,citecolor=green}
+
+% 插入图片
+\usepackage{graphicx}
+% 指定存储图片的路径（当前目录下的figures文件夹）
+\graphicspath{{figures/}}
+
+% 可能用到的包
+\usepackage{amsmath,amssymb}
+\usepackage{multimedia}
+\usepackage{multicol}
+\usepackage{subfigure}
+\usepackage{xmpmulti}
+\usepackage{colortbl,dcolumn}
+
+%\def\hilite<#1>{%
+%\temporal<#1>{\color{blue!35}}{\color{magenta}}%
+%{\color{blue!75}}}
+
+\newcolumntype{H}{>{\columncolor{blue!20}}c!{\vrule}}
+\newcolumntype{H}{>{\columncolor{blue!20}}c}
+%==================================参考文献==============================================================
+\newcommand{\upcite}[1]{\textsuperscript{\cite{#1}}}  %自定义命令\upcite, 使参考文献引用以上标出现
+\bibliographystyle{plain}
+
+%\newtheorem{theorem}{定理}
+%\newtheorem{definition}{定义}
+%\newtheorem{lemma}{引理}
+%\newtheorem{corollary}{推论}
+%\newtheorem{proposition}{性质}
+%\newtheorem{example}{例}
+%\newtheorem{remark}{注}
+
+%\renewcommand{\figurename}{\xiaowu 图}
+%\numberwithin{figure}{section}
+%\renewcommand{\tablename}{\xiaowu  表}
+%\numberwithin{table}{section}
+%\renewcommand{\thefigure}{\thesection-\arabic{figure}}
+%\renewcommand{\thetable}{\thesection.\arabic{table}}
+%\makeatletter
+%\@addtoreset{figure}{section}
+%\makeatother
+
+% 定义一些自选的模板，包括背景、图标、导航条和页脚等，修改要慎重
+% 设置背景渐变由10%的红变成10%的结构颜色
+%\beamertemplateshadingbackground{red!10}{structure!10}
+%\beamertemplatesolidbackgroundcolor{white!90!blue}
+% 使所有隐藏的文本完全透明、动态，而且动态的范围很小
+\beamertemplatetransparentcovereddynamic
+% 使itemize环境中变成小球，这是一种视觉效果
+\beamertemplateballitem
+% 为所有已编号的部分设置一个章节目录，并且编号显示成小球
+\beamertemplatenumberedballsectiontoc
+% 将每一页的要素的要素名设成加粗字体
+\beamertemplateboldpartpage
+
+% item逐步显示时,使已经出现的item、正在显示的item、将要出现的item呈现不同颜色
+\def\hilite<#1>{
+ \temporal<#1>{\color{gray}}{\color{blue}}
+    {\color{blue!25}}
+}
+
+% 自定义彩色块状结构的颜色
+\setbeamercolor{bgcolor}{fg=yellow,bg=cyan}
+
+% 在表格、图片等得标题中显示编号
+\setbeamertemplate{caption}[numbered]
+
+% 打开PDF后直接全屏
+\hypersetup{pdfpagemode={FullScreen}}
